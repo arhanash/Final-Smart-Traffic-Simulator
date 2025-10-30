@@ -1,0 +1,89 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: smart-traffic-backend
+  
+  # Database Configuration (PostgreSQL)
+  datasource:
+    url: jdbc:postgresql://localhost:5432/smart_traffic_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  
+  # H2 Database (Development/Testing)
+  # Uncomment to use H2 instead of PostgreSQL for testing
+  # datasource:
+  #   url: jdbc:h2:mem:testdb
+  #   driver-class-name: org.h2.Driver
+  #   username: sa
+  #   password: 
+  # h2:
+  #   console:
+  #     enabled: true
+  #     path: /h2-console
+  # jpa:
+  #   database-platform: org.hibernate.dialect.H2Dialect
+  
+  # MySQL Alternative Configuration (Uncomment to use MySQL)
+  # datasource:
+  #   url: jdbc:mysql://localhost:3306/smart_traffic_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  #   username: root
+  #   password: root
+  #   driver-class-name: com.mysql.cj.jdbc.Driver
+  # jpa:
+  #   properties:
+  #     hibernate:
+  #       dialect: org.hibernate.dialect.MySQLDialect
+
+# CORS Configuration
+cors:
+  allowed-origins: http://localhost:5173,http://localhost:3000,https://*.sites.blink.new
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+
+# Logging
+logging:
+  level:
+    com.smarttraffic: DEBUG
+    org.springframework: INFO
+    org.hibernate: INFO
+
+# Traffic Simulation Configuration
+traffic:
+  simulation:
+    default-cycle-length: 60  # seconds
+    tick-interval: 1000        # milliseconds
+    max-vehicles-per-road: 50
+    emergency-override-duration: 120  # seconds
+  
+  detection:
+    fps: 2                     # frames per second for video processing
+    confidence-threshold: 0.5  # YOLO detection confidence
+    queue-speed-threshold: 10  # km/h for determining queue
+
+# Export Configuration
+export:
+  pdf:
+    page-size: A4
+    orientation: PORTRAIT
+  excel:
+    sheet-name: "Traffic Analytics"
+  output-directory: ./exports
